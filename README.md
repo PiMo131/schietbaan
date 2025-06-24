@@ -13,6 +13,11 @@ Zo voorkom je dat meerdere schutters tegelijk naar dezelfde baan lopen.
 
 
 ---
+TLDR;
+direct testen? hier een simulator:
+https://pimo131.github.io/schietbaan/
+
+--- 
 
 👥 Rollen
 

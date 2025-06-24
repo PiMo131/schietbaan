@@ -1,3 +1,123 @@
+📋 Handleiding Schietbaan Signaleringssysteem
+
+🎯 Doel van het systeem
+
+Het signaleringssysteem laat in de wachtkamer zien:
+
+Welke banen vrij zijn
+
+Of er al iemand onderweg is naar die baan
+
+
+Zo voorkom je dat meerdere schutters tegelijk naar dezelfde baan lopen.
+
+
+---
+
+👥 Rollen
+
+Baancommandant: staat bij de baan en schakelt de baan vrij via een fysieke schakelaar.
+
+Schutter: wacht in de wachtkamer tot een baan vrij is en kan zichzelf “aanmelden” voor die baan via een knop.
+
+
+
+---
+
+🔄 Hoe werkt het?
+
+✳️ Wanneer is een baan beschikbaar?
+
+De baancommandant zet de fysieke schakelaar aan bij een vrije baan.
+
+In de wachtkamer gaat de LED van die baan aan (groen) → deze baan is beschikbaar!
+
+
+🚶 Wat doet de schutter?
+
+1. Ziet een groene LED in de wachtkamer → baan is vrij.
+
+
+2. Drukt op de knop onder de LED → LED begint te knipperen.
+
+Hiermee geeft hij aan: “Ik ben onderweg naar deze baan.”
+
+
+
+3. De schutter loopt naar de baan.
+
+
+
+🧍 Wat doet de baancommandant?
+
+1. Ziet de schutter aankomen.
+
+
+2. Zet de fysieke schakelaar bij de baan uit → hiermee:
+
+Gaat de LED in de wachtkamer weer uit.
+
+De baan wordt als “bezet” gemarkeerd.
+
+
+
+3. Wacht tot de volgende schutter klaar is.
+
+
+
+
+---
+
+💡 LED-status in de wachtkamer
+
+LED-status	Betekenis
+
+🔘 UIT	Baan is bezet of uitgeschakeld
+🟢 AAN	Baan is vrij en beschikbaar
+🟢 KNIPPEREND	Er is al iemand onderweg naar deze baan
+
+
+
+---
+
+⏱ Automatische reset
+
+Als de knop wordt ingedrukt maar de baan blijft aanstaan, stopt het knipperen automatisch na 5 minuten.
+
+Daarna moet de knop opnieuw worden ingedrukt om de reservering opnieuw te activeren.
+
+
+
+---
+
+🛑 Belangrijk
+
+Druk alleen op de knop als je echt naar de baan loopt.
+
+Respecteer dat een knipperende LED betekent dat iemand al onderweg is.
+
+Alleen de baancommandant schakelt de baan fysiek vrij of dicht.
+
+
+
+---
+
+📍 Locaties van onderdelen
+
+Onderdeel	Locatie
+
+Fysieke schakelaar	Bij de baan
+LED + knop	In de wachtkamer
+
+
+
+---
+
+
+
+
+
+
 # 🔌 MOSFET Control System – Arduino + HTML Simulator
 
 Dit project bevat een volledig werkend systeem voor het aansturen van **MOSFET-kanalen via een Arduino Nano ESP32**, met per kanaal een **toggle-schakelaar**, **drukknop** en **tijdgestuurde knipperlogica**.

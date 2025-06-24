@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Schietbaan simulatie (6 banen)</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f9f9f9;
+      padding: 1em;
+      text-align: center;
+    }
+
+    table {
+      margin: auto;
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: center;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #ccc;
+      transition: 0.4s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+
+    .switch input:checked + .slider {
+      background-color: #4CAF50;
+    }
+
+    .switch input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+
+    button {
+      padding: 8px 14px;
+      font-size: 1em;
+    }
+
+    .led {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      margin: auto;
+      background-color: #bbb; /* grijs = uit */
+      box-shadow: 0 0 5px #0003;
+    }
+
+    .led.on {
+      background-color: green;
+    }
+
+    .led.blink {
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { background-color: green; }
+      50% { background-color: #bbb; }
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Schietbaan simulatie – 6 banen</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Schakelaar op de baan</th>
+        <th>Drukknop bij bord</th>
+        <th>LED</th>
+      </tr>
+    </thead>
+    <tbody id="kanaalTabel">
+      <!-- JS vult deze tabel -->
+    </tbody>
+  </table>
+
+  <script>
+    const kanaalAantal = 6;
+    const knipperDuur = 5 * 60 * 1000; // 5 minuten
+
+    const knipperActief = new Array(kanaalAantal).fill(false);
+    const knipperTimers = new Array(kanaalAantal).fill(null);
+    const startTijden = new Array(kanaalAantal).fill(0);
+
+    const ledStatus = [];
+    const toggleStatus = [];
+
+    const container = document.getElementById("kanaalTabel");
+
+    for (let i = 0; i < kanaalAantal; i++) {
+      const rij = document.createElement("tr");
+
+      // === Toggle ===
+      const tdToggle = document.createElement("td");
+      const switchContainer = document.createElement("label");
+      switchContainer.className = "switch";
+
+      const toggle = document.createElement("input");
+      toggle.type = "checkbox";
+      toggle.checked = true;
+
+      const slider = document.createElement("span");
+      slider.className = "slider";
+
+      switchContainer.appendChild(toggle);
+      switchContainer.appendChild(slider);
+      tdToggle.appendChild(switchContainer);
+      toggleStatus.push(toggle);
+
+      // === Knop ===
+      const tdButton = document.createElement("td");
+      const button = document.createElement("button");
+      button.textContent = `Knop ${i + 1}`;
+      tdButton.appendChild(button);
+
+      // === LED ===
+      const tdLed = document.createElement("td");
+      const led = document.createElement("div");
+      led.className = "led";
+      tdLed.appendChild(led);
+      ledStatus.push(led);
+
+      rij.appendChild(tdToggle);
+      rij.appendChild(tdButton);
+      rij.appendChild(tdLed);
+      container.appendChild(rij);
+
+      // === Knopfunctionaliteit ===
+      button.addEventListener("click", () => {
+        if (!toggle.checked) return;
+
+        if (knipperActief[i]) {
+          clearInterval(knipperTimers[i]);
+          knipperActief[i] = false;
+          updateLED(i, "on");
+        } else {
+          knipperActief[i] = true;
+          startTijden[i] = Date.now();
+          updateLED(i, "blink");
+
+          knipperTimers[i] = setInterval(() => {
+            const verlopen = Date.now() - startTijden[i] > knipperDuur;
+            if (!toggle.checked || verlopen) {
+              clearInterval(knipperTimers[i]);
+              knipperActief[i] = false;
+              updateLED(i, toggle.checked ? "on" : "off");
+            }
+          }, 1000);
+        }
+      });
+
+      // === Toggle functionaliteit ===
+      toggle.addEventListener("change", () => {
+        if (!toggle.checked) {
+          clearInterval(knipperTimers[i]);
+          knipperActief[i] = false;
+          updateLED(i, "off");
+        } else if (!knipperActief[i]) {
+          updateLED(i, "on");
+        }
+      });
+
+      // Startstatus
+      updateLED(i, "on");
+    }
+
+    function updateLED(index, state) {
+      const led = ledStatus[index];
+      led.classList.remove("on", "blink");
+      if (state === "on") led.classList.add("on");
+      else if (state === "blink") led.classList.add("blink");
+      // anders: blijft grijs
+    }
+  </script>
+
+</body>
+</html>
